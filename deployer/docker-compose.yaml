@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  deployer:
+    hostname: deployer
+    image: local/deployer
+    extra_hosts:
+      - puppetca:192.168.216.12
+      - puppetdb:192.168.216.12
+      - puppetserver:192.168.216.12
+      - nats:192.168.216.12
+    environment:
+      - CA_SERVER=puppetca
+      - NATS=nats:4222
+      - PUPPETDB=puppetdb
+      - PUPPETSERVER=puppetserver
