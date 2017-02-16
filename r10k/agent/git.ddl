@@ -6,7 +6,7 @@ metadata :name        => 'git',
          :url         => 'https://github.com/vshn/puppet-in-docker/blob/master/r10k/README.md',
          :timeout     => 60
 
-action 'clon', :description => 'Clones a Git repository' do
+action 'cln', :description => 'Clones a Git repository' do
     input :repo,
           :prompt      => 'Repository',
           :description => 'URL of the repository to clone',
@@ -29,6 +29,71 @@ action 'clon', :description => 'Clones a Git repository' do
            :default     => ''
 end
 
-# action 'pull'
-# action 'reset'
-# action 'checkout'
+action 'pll', :description => 'Pulls a Git repository' do
+    input :path,
+          :prompt      => 'Path',
+          :description => 'Path to the Git repo',
+          :type        => :string,
+          :validation  => '.*',
+          :optional    => false,
+          :maxlength   => 1024
+
+    input :remote,
+          :prompt      => 'Git remote',
+          :description => 'Name of the Git remote to pull from',
+          :type        => :string,
+          :validation  => '.*',
+          :optional    => false,
+          :maxlength   => 1024
+
+    input :ref,
+          :prompt      => 'Git ref for pull',
+          :description => 'Git ref to pull from',
+          :type        => :string,
+          :validation  => '.*',
+          :optional    => false,
+          :maxlength   => 1024
+
+    output :msg,
+           :description => 'Git message',
+           :display_as  => 'Message',
+           :default     => ''
+end
+
+action 'rst', :description => 'Resets a Git repository' do
+    input :path,
+          :prompt      => 'Path',
+          :description => 'Path to the Git repo',
+          :type        => :string,
+          :validation  => '.*',
+          :optional    => false,
+          :maxlength   => 1024
+
+    output :msg,
+           :description => 'Git message',
+           :display_as  => 'Message',
+           :default     => ''
+end
+
+action 'chckt', :description => 'Checks out a Git ref' do
+    input :path,
+          :prompt      => 'Path',
+          :description => 'Path to the Git repo',
+          :type        => :string,
+          :validation  => '.*',
+          :optional    => false,
+          :maxlength   => 1024
+
+    input :ref,
+          :prompt      => 'Git ref',
+          :description => 'Ref to checkout',
+          :type        => :string,
+          :validation  => '.*',
+          :optional    => false,
+          :maxlength   => 1024
+
+    output :msg,
+           :description => 'Git message',
+           :display_as  => 'Message',
+           :default     => ''
+end
