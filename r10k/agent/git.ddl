@@ -7,6 +7,8 @@ metadata :name        => 'git',
          :timeout     => 60
 
 action 'cln', :description => 'Clones a Git repository' do
+    display :always
+
     input :repo,
           :prompt      => 'Repository',
           :description => 'URL of the repository to clone',
@@ -30,6 +32,8 @@ action 'cln', :description => 'Clones a Git repository' do
 end
 
 action 'pll', :description => 'Pulls a Git repository' do
+    display :always
+
     input :path,
           :prompt      => 'Path',
           :description => 'Path to the Git repo',
@@ -43,16 +47,18 @@ action 'pll', :description => 'Pulls a Git repository' do
           :description => 'Name of the Git remote to pull from',
           :type        => :string,
           :validation  => '.*',
-          :optional    => false,
-          :maxlength   => 1024
+          :optional    => true,
+          :default     => 'origin',
+          :maxlength   => 30
 
     input :ref,
           :prompt      => 'Git ref for pull',
           :description => 'Git ref to pull from',
           :type        => :string,
           :validation  => '.*',
-          :optional    => false,
-          :maxlength   => 1024
+          :optional    => true,
+          :default     => 'master',
+          :maxlength   => 30
 
     output :msg,
            :description => 'Git message',
@@ -60,7 +66,9 @@ action 'pll', :description => 'Pulls a Git repository' do
            :default     => ''
 end
 
-action 'rst', :description => 'Resets a Git repository' do
+action 'rst', :description => 'Hard resets a Git repository to HEAD' do
+    display :always
+
     input :path,
           :prompt      => 'Path',
           :description => 'Path to the Git repo',
@@ -76,6 +84,8 @@ action 'rst', :description => 'Resets a Git repository' do
 end
 
 action 'chckt', :description => 'Checks out a Git ref' do
+    display :always
+
     input :path,
           :prompt      => 'Path',
           :description => 'Path to the Git repo',
