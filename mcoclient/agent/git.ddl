@@ -7,6 +7,8 @@ metadata :name        => 'git',
          :timeout     => 60
 
 action 'cln', :description => 'Clones a Git repository' do
+    display :always
+
     input :repo,
           :prompt      => 'Repository',
           :description => 'URL of the repository to clone',
@@ -29,7 +31,9 @@ action 'cln', :description => 'Clones a Git repository' do
            :default     => ''
 end
 
-action 'pll', :description => 'Pulls a Git repository' do
+action 'run', :description => 'Runs a Git command in PATH' do
+    display :always
+
     input :path,
           :prompt      => 'Path',
           :description => 'Path to the Git repo',
@@ -38,29 +42,35 @@ action 'pll', :description => 'Pulls a Git repository' do
           :optional    => false,
           :maxlength   => 1024
 
-    input :remote,
-          :prompt      => 'Git remote',
-          :description => 'Name of the Git remote to pull from',
-          :type        => :string,
-          :validation  => '.*',
-          :optional    => false,
-          :maxlength   => 1024
+    input :command,
+          :prompt      => 'Git command',
+          :description => 'Git command to run',
+          :type        => :list,
+          :list        => ['pull', 'reset', 'checkout'],
+          :optional    => false
 
-    input :ref,
-          :prompt      => 'Git ref for pull',
-          :description => 'Git ref to pull from',
+    input :arg,
+          :prompt      => 'Git command arguments',
+          :description => 'Arguments to pass to the Git command',
           :type        => :string,
           :validation  => '.*',
           :optional    => false,
-          :maxlength   => 1024
+          :maxlength   => 90
 
     output :msg,
            :description => 'Git message',
-           :display_as  => 'Message',
+           :display_as  => 'Git message',
+           :default     => ''
+
+    output :out,
+           :description => 'Git message status',
+           :display_as  => 'Git status',
            :default     => ''
 end
 
-action 'rst', :description => 'Resets a Git repository' do
+action 'gws', :description => 'Runs the gws tool' do
+    display :always
+
     input :path,
           :prompt      => 'Path',
           :description => 'Path to the Git repo',
@@ -69,28 +79,12 @@ action 'rst', :description => 'Resets a Git repository' do
           :optional    => false,
           :maxlength   => 1024
 
-    output :msg,
-           :description => 'Git message',
-           :display_as  => 'Message',
-           :default     => ''
-end
-
-action 'chckt', :description => 'Checks out a Git ref' do
-    input :path,
-          :prompt      => 'Path',
-          :description => 'Path to the Git repo',
-          :type        => :string,
-          :validation  => '.*',
-          :optional    => false,
-          :maxlength   => 1024
-
-    input :ref,
-          :prompt      => 'Git ref',
-          :description => 'Ref to checkout',
-          :type        => :string,
-          :validation  => '.*',
-          :optional    => false,
-          :maxlength   => 1024
+    input :command,
+          :prompt      => 'GWS command',
+          :description => 'GWS command to run',
+          :type        => :list,
+          :list        => ['update', 'ff', 'check'],
+          :optional    => false
 
     output :msg,
            :description => 'Git message',

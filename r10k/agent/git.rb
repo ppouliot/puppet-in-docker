@@ -3,19 +3,44 @@ module MCollective
     class Git<RPC::Agent
 
       action "cln" do
-        reply[:status] = run("git clone #{request[:repo]} #{request[:path]}", :stdout => :out, :stderr => :msg)
+        command = "git clone #{request[:repo]} #{request[:path]}"
+        Log.info("Running '#{command}'")
+
+        reply[:status] = run("git clone #{request[:repo]} #{request[:path]}",
+                             :stdout => :out,
+                             :stderr => :msg)
+
+        if reply[:status] != 0
+          reply.fail "Command failed: #{command}. Reason: \n #{reply[:msg]}", 1
+        end
       end
 
-      action "pll" do
-        reply[:status] = run("cd #{request[:path]}; git pull #{request[:remote]} #{request[:ref]}", :stdout => :out, :stderr => :msg)
+      action "run" do
+        command = "git #{request[:command]} #{request[:arg]}"
+        Log.info("Running '#{command}' in #{request[:path]}")
+
+        reply[:status] = run(command,
+                             :stdout => :out,
+                             :stderr => :msg,
+                             :cwd => request[:path])
+
+        if reply[:status] != 0
+          reply.fail "Command failed: #{command}. Reason: \n #{reply[:msg]}", 1
+        end
       end
 
-      action "rst" do
-        reply[:status] = run("cd #{request[:path]}; git reset --hard", :stdout => :out, :stderr => :msg)
-      end
+      action "gws" do
+        command = "/usr/local/bin/gws #{request[:command]}"
+        Log.info("Running '#{command}' in #{request[:path]}")
 
-      action "chckt" do
-        reply[:status] = run("cd #{request[:path]}; git checkout #{request[:ref]}", :stdout => :out, :stderr => :msg)
+        reply[:status] = run(command,
+                             :stdout => :out,
+                             :stderr => :msg,
+                             :cwd => request[:path])
+
+        if reply[:status] != 0
+          reply.fail "Command failed: #{command}. Reason: \n #{reply[:msg]}", 1
+        end
       end
 
     end
